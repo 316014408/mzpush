@@ -33,8 +33,10 @@ type ClickTypeInfo struct {
 }
 
 type PushTimeInfo struct {
-	OffLine   int32 `json:"offLine,omitempty"` // 是否进离线消息(0 否 1 是[validTime]) 【int 非必填，默认值为1】
-	ValidTime int32 `json:"validTime"`         // 有效时长 (1 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+	OffLine      int32  `json:"offLine,omitempty"`      // 是否进离线消息(0 否 1 是[validTime]) 【int 非必填，默认值为1】
+	ValidTime    int32  `json:"validTime"`              // 有效时长 (1 72 小时内的正整数) 【int offLine值为1时，必填，默认24】
+	PushTimeType int32  `json:"pushTimeType,omitempty"` // 定时推送 (0, "即时"),(1, "定时")【必填，默认0】
+	StartTime    string `json:"startTime,omitempty"`    // 任务定时开始时间(yyyy-MM-dd HH:mm:ss) 【非必填pushTimeType为1必填】
 }
 
 type AdvanceInfo struct {
@@ -69,6 +71,26 @@ func NewNotificationMessage(notificationTitle, notificationContent string) *Noti
 			ValidTime: 24,
 		},
 	}
+}
+
+func (t *ThroughMessage) SetThroughPushTimeInfoOffLine(offLine int32) *ThroughMessage {
+	t.PushTimeInfo.OffLine = offLine
+	return t
+}
+
+func (t *ThroughMessage) SetThroughPushTimeInfoValidTime(validTime int32) *ThroughMessage {
+	t.PushTimeInfo.ValidTime = validTime
+	return t
+}
+
+func (t *ThroughMessage) SetThroughPushTimeInfoPushTimeType(pushTimeType int32) *ThroughMessage {
+	t.PushTimeInfo.PushTimeType = pushTimeType
+	return t
+}
+
+func (t *ThroughMessage) SetThroughPushTimeInfoStartTime(startTime string) *ThroughMessage {
+	t.PushTimeInfo.StartTime = startTime
+	return t
 }
 
 func (n *NotificationMessage) SetNoticeBarInfoNoticeBarType(noticeBarType int32) *NotificationMessage {
@@ -123,6 +145,16 @@ func (n *NotificationMessage) SetPushTimeInfoOffLine(offLine int32) *Notificatio
 
 func (n *NotificationMessage) SetPushTimeInfoValidTime(validTime int32) *NotificationMessage {
 	n.PushTimeInfo.ValidTime = validTime
+	return n
+}
+
+func (n *NotificationMessage) SetPushTimeInfoPushTimeType(pushTimeType int32) *NotificationMessage {
+	n.PushTimeInfo.PushTimeType = pushTimeType
+	return n
+}
+
+func (n *NotificationMessage) SetPushTimeInfoPushStartTime(startTime string) *NotificationMessage {
+	n.PushTimeInfo.StartTime = startTime
 	return n
 }
 
